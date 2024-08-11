@@ -1,19 +1,27 @@
-from dataclasses import dataclass, field
-from typing import List
+from uuid import uuid4
 
 
-@dataclass
 class Transactions:
-    details: str
-    value: float
-    category: str
-    transactions: List[dict] = field(default_factory=list)
+    def __init__(self, details, value, category):
+        self.id = str(uuid4())
+        self.details = details
+        self.value = value
+        self.category = category
+        self.transactions = []
 
     def register_transaction(self):
-        new_transaction = vars(self)
+        new_transaction = {
+            "id": self.id,
+            "details": self.details,
+            "value": self.value,
+            "category": self.category
+        }
+
+        self.transactions.append(new_transaction)
         return new_transaction
 
 
 t1 = Transactions("Teste", 1000, "Receita")
 
 print(t1.register_transaction())
+print(t1.transactions)
