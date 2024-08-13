@@ -1,4 +1,26 @@
 {
-  "transactions": [],
-  "categories": []
+    "categories": [
+        {
+            "id": "2e56a737-fd47-4170-a929-b84df56156b8",
+            "category": "Lazer"
+        },
+        {
+            "id": "774d5519-f482-4263-8780-7993580b0822",
+            "category": "Receita"
+        }
+    ],
+    "transactions": [
+        {
+            "id": "8ff692b0-ec44-4c3e-a489-63a0b3598313",
+            "details": "Sal\u00e1rio",
+            "amount": 2500.0,
+            "category": "Receita"
+        },
+        {
+            "id": "61e81f54-8537-4954-a2b2-e39a07e8beb2",
+            "details": "Show",
+            "amount": -500.0,
+            "category": "Lazer"
+        }
+    ]
 }

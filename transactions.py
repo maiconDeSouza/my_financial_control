@@ -1,27 +1,51 @@
-from uuid import uuid4
+import json
+import uuid
+from pathlib import Path
+
+DB_PATH = Path(__file__).parent / 'db.json'
 
 
-class Transactions:
-    def __init__(self, details, value, category):
-        self.id = str(uuid4())
-        self.details = details
-        self.value = value
-        self.category = category
+class Transaction:
+    def __init__(self):
         self.transactions = []
 
-    def register_transaction(self):
-        new_transaction = {
-            "id": self.id,
-            "details": self.details,
-            "value": self.value,
-            "category": self.category
+    def load_transactions(self):
+        if DB_PATH.exists():
+            with open(DB_PATH, 'r') as f:
+                data = json.load(f)
+                self.transactions = data.get('transactions', [])
+
+    def save_transactions(self):
+        if DB_PATH.exists():
+            with open(DB_PATH, 'r') as f:
+                data = json.load(f)
+        else:
+            data = {}
+
+        data['transactions'] = self.transactions
+        with open(DB_PATH, 'w') as f:
+            json.dump(data, f, indent=4)
+
+    def add_transaction(self, details, amount, category):
+        transaction = {
+            'id': str(uuid.uuid4()),
+            'details': details,
+            'amount': amount,
+            'category': category
         }
+        self.transactions.append(transaction)
+        self.save_transactions()
+        print(f"Transaction '{details}' added successfully.")
 
-        self.transactions.append(new_transaction)
-        return new_transaction
+    def list_transactions(self):
+        if not self.transactions:
+            print("No transactions available.")
+        else:
+            print("Transactions:")
+            for trans in self.transactions:
+                print(f"- {trans['details']} | Amount: {trans['amount']
+                                                        } | Category: {trans['category']}")
 
-
-t1 = Transactions("Teste", 1000, "Receita")
-
-print(t1.register_transaction())
-print(t1.transactions)
+    def calculate_balance(self):
+        balance = sum(trans['amount'] for trans in self.transactions)
+        print(f"Total Balance: {balance}")
